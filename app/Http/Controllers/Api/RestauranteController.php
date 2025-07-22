@@ -8,7 +8,7 @@ use App\Http\Requests\RestauranteRequest;
 use App\Http\Resources\RestauranteResource;
 use App\Models\Restaurante;
 use App\Services\RestauranteService;
-use Illuminate\Http\Request;
+
 
 class RestauranteController extends Controller
 {
@@ -26,7 +26,9 @@ class RestauranteController extends Controller
      */
     public function store(RestauranteRequest $request)
     {
-        $dto = RestauranteDTO::fromArray($request->validate());
+        $validacion = $request->validated();
+        
+        $dto = RestauranteDTO::fromArray($validacion);
         $restaurante = $this->servicio->crear($dto);
 
         return new RestauranteResource($restaurante);
@@ -44,8 +46,14 @@ class RestauranteController extends Controller
      * Update the specified resource in storage.
      */
     public function update(RestauranteRequest $request, Restaurante $restaurante)
-    {
-        $dto = RestauranteDTO::fromArray($request->validate());
+    {   
+        if($request->isMethod('PATCH')) {
+           
+            $dto = RestauranteDTO::fromPatch($restaurante,$request->validated());
+            
+        }else{
+            $dto = RestauranteDTO::fromArray($request->validated());
+        }
         $restauranteActualizado = $this->servicio->actualizar($restaurante->id, $dto);
 
         return new RestauranteResource($restauranteActualizado);    

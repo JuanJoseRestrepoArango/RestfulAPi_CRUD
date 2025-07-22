@@ -21,11 +21,27 @@ class RestauranteRequest extends FormRequest
      */
     public function rules(): array
     {
+
+        
+        if($this->isMethod('PUT')) {
+            return [
+                'nombre' => 'required|string|max:255',
+                'direccion' => 'required|string|max:255',
+                'telefono' => 'required|string|max:20',
+            ];
+        }elseif($this->isMethod('PATCH')) {
+            return [
+                'nombre' => 'sometimes|string|max:255',
+                'direccion' => 'sometimes|string|max:255',
+                'telefono' => 'sometimes|string|max:20',
+            ];
+        }
+
         return [
-            'nombre' => 'required|string|max:255',
-            'direccion' => 'required|string|max:255',
-            'telefono' => 'required|string|max:20',
-        ];
+                'nombre' => 'required|string|max:255',
+                'direccion' => 'required|string|max:255',
+                'telefono' => 'required|string|max:20',
+            ];
 
         
     }
