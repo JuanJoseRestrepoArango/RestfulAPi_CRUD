@@ -10,7 +10,7 @@ class RestauranteDTO{
         return new self(
             $datos['nombre'],
             $datos['direccion'],
-            $datos['telefono'],
+            $datos['telefono']
         );
     }
 
