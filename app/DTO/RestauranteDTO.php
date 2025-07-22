@@ -1,0 +1,20 @@
+<?php
+
+namespace App\DTO;
+
+class RestauranteDTO{
+
+    public function __construct(public string $nombre,public string $direccion,public string $telefono,){}
+
+    public static function fromArray(array $datos){
+        return new self(
+            $datos['nombre'],
+            $datos['direccion'],
+            $datos['telefono'],
+        );
+    }
+
+    public function toArray(){
+        return get_object_vars($this);
+    }
+}
