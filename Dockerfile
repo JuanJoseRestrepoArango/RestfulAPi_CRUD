@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
     zip \
     git \
     unzip \
+    default-mysql-client \
     curl \
     libonig-dev \
     && docker-php-ext-install pdo pdo_mysql zip mbstring exif bcmath 

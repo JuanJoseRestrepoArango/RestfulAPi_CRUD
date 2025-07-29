@@ -14,8 +14,8 @@ class RestauranteDTO{
         );
     }
 
-    public static function fromPatch($datosViejos,array $datos){
-        $datosActuales = $datosViejos->toArray();
+    public static function fromPatch($datosActuales,array $datos){
+    
         $datosNuevos = array_merge($datosActuales, $datos);
         return new self(
             $datosNuevos['nombre'],

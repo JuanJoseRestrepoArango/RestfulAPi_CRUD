@@ -2,25 +2,28 @@
 
 namespace App\Http\Controllers\Api;
 
+use Throwable;
 use App\DTO\RestauranteDTO;
-use App\Exceptions\RestauranteNoEncontradoException;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\RestauranteRequest;
-use App\Http\Resources\RestauranteResource;
 use App\Models\Restaurante;
+use App\Helpers\ApiResponse;
+use App\Http\Controllers\Controller;
 use App\Services\RestauranteService;
 use Illuminate\Database\QueryException;
-use Throwable;
+use App\Http\Requests\RestauranteRequest;
+use App\Http\Resources\RestauranteResource;
+use App\Exceptions\RestauranteNoEncontradoException;
+use Exception;
 
 class RestauranteController extends Controller
 {
+
     public function __construct(private RestauranteService $servicio){}
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return RestauranteResource::collection($this->servicio->listar());
+        return ApiResponse::exito(RestauranteResource::collection($this->servicio->listar()));
     }
 
     /**
@@ -28,22 +31,14 @@ class RestauranteController extends Controller
      */
     public function store(RestauranteRequest $request)
     {
-        try{
-            $validacion = $request->validated();
         
-            $dto = RestauranteDTO::fromArray($validacion);
-            $restaurante = $this->servicio->crear($dto);
+        $validacion = $request->validated();
+    
+        $dto = RestauranteDTO::fromArray($validacion);
+        $restaurante = $this->servicio->crear($dto);
 
-            return new RestauranteResource($restaurante);
-        }catch(QueryException $query_error){
-           return response()->json([
-                'error' => 'Error al crear el restaurante: ' . $query_error->getMessage()
-            ], 500);
-        }catch(Throwable $error){
-            return response()->json([
-                'error' => 'Error inesperado: ' . $error->getMessage()
-            ], 500);
-        }
+        return ApiResponse::exito(new RestauranteResource($restaurante), 'Restaurante creado correctamente');
+    
         
     }
 
@@ -52,19 +47,11 @@ class RestauranteController extends Controller
      */
     public function show($id)
     {
-        try {
-            $restaurante = $this->servicio->mostrar($id);
+        
+        $restaurante = $this->servicio->mostrar($id);
 
-            return new RestauranteResource($restaurante);
-        } catch (RestauranteNoEncontradoException $error_restaurante) {
-            return response()->json([
-                'error' => $error_restaurante->getMessage()
-            ], 404);
-        } catch (Throwable $error) {
-            return response()->json([
-                'error' => 'Error inesperado: ' . $error->getMessage()
-            ], 500);
-        }       
+        return ApiResponse::exito(new RestauranteResource($restaurante));
+          
     }
 
     /**
@@ -72,31 +59,19 @@ class RestauranteController extends Controller
      */
     public function update(RestauranteRequest $request,  $id)
     {   
-        try {
-            if($request->isMethod('PATCH')) {
-           
-                $dto = RestauranteDTO::fromPatch($this->servicio->mostrar($id),$request->validated());
-            
-            }else{
-                $dto = RestauranteDTO::fromArray($request->validated());
-            }
-
-            $restauranteActualizado = $this->servicio->actualizar($id, $dto);
-
-            return new RestauranteResource($restauranteActualizado); 
-        }catch (RestauranteNoEncontradoException $error_restaurante) {
-            return response()->json([
-                'error' => $error_restaurante->getMessage()
-            ], 404);
-        }catch(QueryException $query_error){
-           return response()->json([
-                'error' => 'Error al crear el restaurante: ' . $query_error->getMessage()
-            ], 500);
-        } catch (Throwable $error) {
-            return response()->json([
-                'error' => 'Error inesperado: ' . $error->getMessage()
-            ], 500);
+        
+        if($request->isMethod('PATCH')) {
+        
+            $dto = RestauranteDTO::fromPatch($this->servicio->mostrar($id)->toArray(),$request->validated());
+        
+        }else{
+            $dto = RestauranteDTO::fromArray($request->validated());
         }
+
+        $restauranteActualizado = $this->servicio->actualizar($id, $dto);
+
+        return ApiResponse::exito(new RestauranteResource($restauranteActualizado),'Restaurante actualizado correctamente'); 
+        
     }
 
     /**
@@ -104,17 +79,11 @@ class RestauranteController extends Controller
      */
     public function destroy($id)
     {
-        try {
+       try{
             $this->servicio->eliminar($id);
             return response()->noContent();
-        } catch (RestauranteNoEncontradoException $error_restaurante) {
-            return response()->json([
-                'error' => $error_restaurante->getMessage()
-            ], 404);
-        } catch (Throwable $error) {
-            return response()->json([
-                'error' => 'Error inesperado: ' . $error->getMessage()
-            ], 500);
-        }  
+       }catch(Exception $e){
+            return ApiResponse::error('Error al eliminar el restaurante', 409);
+       }
     }
 }

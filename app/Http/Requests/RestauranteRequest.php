@@ -27,20 +27,20 @@ class RestauranteRequest extends FormRequest
             return [
                 'nombre' => 'required|string|max:255',
                 'direccion' => 'required|string|max:255',
-                'telefono' => 'required|string|max:20',
+                'telefono' => 'required|regex:/^[0-9\-\+\(\) ]+$/|max:20',
             ];
         }elseif($this->isMethod('PATCH')) {
             return [
                 'nombre' => 'sometimes|string|max:255',
                 'direccion' => 'sometimes|string|max:255',
-                'telefono' => 'sometimes|string|max:20',
+                'telefono' => 'sometimes|regex:/^[0-9\-\+\(\) ]+$/|max:20',
             ];
         }
 
         return [
                 'nombre' => 'required|string|max:255',
                 'direccion' => 'required|string|max:255',
-                'telefono' => 'required|string|max:20',
+                'telefono' => 'required|regex:/^[0-9\-\+\(\) ]+$/|max:20',
             ];
 
         

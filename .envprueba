@@ -1,7 +1,7 @@
 APP_NAME=Laravel
 APP_ENV=local
-APP_KEY=
-APP_DEBUG=true
+APP_KEY=base64:yPwpOkhhkm01OjxtIWIbyQ+hrBjFQinK+IyLkVvkx9w=
+APP_DEBUG=false
 APP_URL=http://localhost
 
 APP_LOCALE=en
@@ -23,9 +23,11 @@ LOG_LEVEL=debug
 DB_CONNECTION=mysql
 DB_HOST=db
 DB_PORT=3306
-DB_DATABASE=restaurante_apirestful_ejemplo
+DB_DATABASE=restaurante_apirestful
 DB_USERNAME=usuario
 DB_PASSWORD=contraseña
+
+MYSQL_ROOT_PASSWORD=contraseña
 
 SESSION_DRIVER=database
 SESSION_LIFETIME=120
@@ -63,3 +65,5 @@ AWS_BUCKET=
 AWS_USE_PATH_STYLE_ENDPOINT=false
 
 VITE_APP_NAME="${APP_NAME}"
+
+API_KEY=5GXaERVSlw4ZW5CYrJ1UIYQUIFR+n0gK2KqSdFpzbG0=

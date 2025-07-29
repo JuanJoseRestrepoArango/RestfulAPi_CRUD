@@ -13,9 +13,9 @@ services:
     environment:
       - APACHE_DOCUMENT_ROOT=/var/www/html/public
       - DB_HOST=db
-      - DB_DATABASE=${DB_DATABASE}
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=restaurante_apirestful
+      - DB_USERNAME=usuario
+      - DB_PASSWORD=contraseña
 
   db:
     image: mysql:8.0
@@ -24,10 +24,10 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: contraseña
+      MYSQL_DATABASE: restaurante_apirestful
+      MYSQL_USER: usuario
+      MYSQL_PASSWORD: contraseña
     volumes:
       - db_data:/var/lib/mysql
 
