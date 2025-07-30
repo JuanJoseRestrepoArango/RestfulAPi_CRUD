@@ -37,5 +37,9 @@ echo "Ejecutando migraciones..."
 
 php artisan migrate --force
 
+echo "Creando documentación Swagger..."
+php artisan config:clear
+php artisan cache:clear
+php artisan l5-swagger:generate -vvv
 echo "Iniciando Apache..."
 exec apache2-foreground
