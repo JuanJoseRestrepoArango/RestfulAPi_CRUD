@@ -195,3 +195,22 @@ docker exec -it api_restfull_laravel_app php artisan migrate
 ```
 docker-compose down
 ```
+
+---
+
+## 📚 Documentación de la API (Swagger)
+
+La API cuenta con documentación automática generada con Swagger.
+
+Una vez la aplicación esté corriendo, puedes acceder a la documentación desde:
+
+```
+http://localhost:8000/api/documentation
+```
+
+Ahí verás todos los endpoints documentados, sus parámetros, respuestas esperadas y ejemplos.
+
+> ⚙️ La documentación se genera automáticamente al levantar el contenedor mediante el comando `php artisan l5-swagger:generate`.
+
+---
+
